@@ -16,11 +16,6 @@ import java.awt.*;
 
 public class SharkBait extends TeamRobot {
 
-	public void onMessageReceived(MessageEvent e) {
-out.println(e.getMessage());
-	}
-
-
 	boolean movingForward; // Is set to true when setAhead is called, set to false on setBack
 	boolean inWall; // Is true when robot is near the wall.
 
@@ -89,12 +84,27 @@ out.println(e.getMessage());
  *
  */
 
+	public void onMessageReceived(MessageEvent e) {
+		String number = e.getMessage();
+	}
+
 	public void onScannedRobot(ScannedRobotEvent e) {
 
 	// ignore our team mate - focus on enemy
 		if(isTeammate(e.getName())){
 			return;
 		}
+
+		try {
+			// Send enemy position to teammates
+			broadcastMessage(getGunHeading());
+//			out.println("Order sent!");
+		} catch (IOException ex) {
+			out.println("Unable to send order: ");
+			ex.printStackTrace(out);
+		}
+
+
 		// Calculate exact location of the robot
 		double absoluteBearing = getHeading() + e.getBearing();
 		double bearingFromGun = normalRelativeAngleDegrees(absoluteBearing - getGunHeading());
@@ -138,15 +148,6 @@ out.println(e.getMessage());
 		// Generates another scan event if we do not see a robot.
 		if (bearingFromGun == 0) {
 			scan();
-		}
-
-		try {
-			// Send enemy position to teammates
-			broadcastMessage("Hi im shark bait. Pls get this.");
-			out.println("Order sent!");
-		} catch (IOException ex) {
-			out.println("Unable to send order: ");
-			ex.printStackTrace(out);
 		}
 
 	}

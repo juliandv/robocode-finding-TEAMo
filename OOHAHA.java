@@ -93,8 +93,18 @@ public class OOHAHA extends TeamRobot {
 
 		// ignore our team mate - focus on enemy
 		if (isTeammate(e.getName())) {
-			return;
+		    return;
 		}
+
+        try {
+            // Send enemy position to teammates
+            broadcastMessage(getGunHeading());
+//			out.println("Order sent!");
+        } catch (IOException ex) {
+            out.println("Unable to send order: ");
+            ex.printStackTrace(out);
+        }
+
 		// Calculate exact location of the robot
 		double absoluteBearing = getHeading() + e.getBearing();
 		double bearingFromGun = normalRelativeAngleDegrees(absoluteBearing - getGunHeading());
