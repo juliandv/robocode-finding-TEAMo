@@ -1,32 +1,15 @@
 package comp771;
 
 public class TeamHeading implements java.io.Serializable {
-
-}
-
-
-
-
-/**
- * Point - a serializable point class
- */
-public class Point implements java.io.Serializable {
-
     private static final long serialVersionUID = 1L;
 
-    private double x = 0.0;
-    private double y = 0.0;
+    private double heading = 0.0;
 
-    public Point(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public TeamHeading(double heading) {
+        this.heading = heading;
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
+    public double getTeamHeading() {
+        return heading;
     }
 }

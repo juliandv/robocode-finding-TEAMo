@@ -16,13 +16,11 @@ import java.awt.*;
 
 public class OOHAHA extends TeamRobot {
 
-	public void onMessageReceived(MessageEvent e) {
-		out.println(e.getMessage());
-	}
-
 //skdabksdbsa
 	boolean movingForward; // Is set to true when setAhead is called, set to false on setBack
 	boolean inWall; // Is true when robot is near the wall.
+    int myTeamHeading;
+
 
 	public void run() {
 		// Set colors
@@ -89,16 +87,26 @@ public class OOHAHA extends TeamRobot {
  *
  */
 
+    public void onMessageReceived(MessageEvent e) {
+        if (e.getMessage() instanceof TeamHeading) {
+            TeamHeading h = (TeamHeading) e.getMessage();
+            int h2 = (int)h.getTeamHeading();
+            myTeamHeading = h2;
+//            out.println(h2);
+        }
+    }
+
 	public void onScannedRobot(ScannedRobotEvent e) {
 
 		// ignore our team mate - focus on enemy
-		if (isTeammate(e.getName())) {
-		    return;
-		}
+        if(isTeammate(e.getName())){
+            return;
+        }
 
+        double myHeading = getGunHeading();
         try {
             // Send enemy position to teammates
-            broadcastMessage(getGunHeading());
+            broadcastMessage(new TeamHeading(myHeading));
 //			out.println("Order sent!");
         } catch (IOException ex) {
             out.println("Unable to send order: ");
@@ -133,7 +141,10 @@ public class OOHAHA extends TeamRobot {
 
 
 		// If it's close enough, fire!
-		if (Math.abs(bearingFromGun) <= 4) {
+        if (myTeamHeading == getGunHeading()-180 || myTeamHeading == getGunHeading()) {
+            out.println("ain't firing bby");
+		    fire(0);
+        } else if (Math.abs(bearingFromGun) <= 4) {
 			setTurnGunRight(bearingFromGun);    // keep gun focussed on the enemy
 			setTurnRadarRight(bearingFromRadar); // keep the radar focussed on the enemy
 			// If we are able to fire, then fire dpeending on how far away the enemy is, always keeping 0.1 spare so we don't disable ourselves.
