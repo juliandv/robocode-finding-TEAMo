@@ -38,11 +38,13 @@ public class SharkBait extends TeamRobot {
 			inWall = false;
 		}
 
-		setAhead(40000); // go ahead until you get commanded to do differently
-		setTurnRadarRight(360); // scan constantly
-		movingForward = true; // we called setAhead, so movingForward is true
+
 
 		while (true) {
+
+			setAhead(40000); // go ahead until you get commanded to do differently
+			setTurnRadarRight(360); // scan constantly
+			movingForward = true; // we called setAhead, so movingForward is true
 			// check if we are in a wall. If we are between 50 pixels of the borders of the battlefield - then we are in a wall
 			if (getX() > 50 && getY() > 50 && getBattleFieldWidth() - getX() > 50 && getBattleFieldHeight() - getY() > 50 && inWall == true) {
 				inWall = false;
@@ -119,24 +121,24 @@ public class SharkBait extends TeamRobot {
 		double bearingFromRadar = normalRelativeAngleDegrees(absoluteBearing - getRadarHeading());
 
 		//If we are far away, circle closer
-		if (movingForward && (e.getDistance()>400)){
-			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 50));
+		if (movingForward && (e.getDistance() > 10)) {
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 30));
 		} else {
-			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 130));
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 30));
 		}
 
 		//if we are close, circle outwards
-		if (movingForward && (e.getDistance()<100)){
-			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 100));
+		if (movingForward && (e.getDistance() < 10)) {
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 10));
 		} else {
-			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 80));
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 10));
 		}
 
 		//if we are at the perfect distance, circle perprindicular
-		if (movingForward && (e.getDistance()==100)){
-			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 90));
+		if (movingForward && (e.getDistance() == 10)) {
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 0));
 		} else {
-			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 90));
+			setTurnRight(normalRelativeAngleDegrees(e.getBearing() + 0));
 		}
 
 
